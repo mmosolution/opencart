@@ -58,6 +58,7 @@ class ControllerPaymentTwoCheckout extends Controller {
 
 		if ($this->config->get('twocheckout_test')) {
 			$data['demo'] = 'Y';
+			$data['action']  = 'https://sandbox.2checkout.com/checkout/purchase';
 		} else {
 			$data['demo'] = '';
 		}
