@@ -14,7 +14,14 @@ class ControllerCommonSeoUrl extends Controller {
 			if (utf8_strlen(end($parts)) == 0) {
 				array_pop($parts);
 			}
-
+			// for easier writing OCMOD and VQMOD (it always conflict) when more than 1 extension effect to it)
+			
+			   $disallow_parts = array(
+			                        'information_id',
+			                        'manufacturer_id',
+			                        'category_id',
+			                        'product_id'
+                		 );
 			foreach ($parts as $part) {
 				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE keyword = '" . $this->db->escape($part) . "'");
 
@@ -40,8 +47,8 @@ class ControllerCommonSeoUrl extends Controller {
 					if ($url[0] == 'information_id') {
 						$this->request->get['information_id'] = $url[1];
 					}
-
-					if ($query->row['query'] && $url[0] != 'information_id' && $url[0] != 'manufacturer_id' && $url[0] != 'category_id' && $url[0] != 'product_id') {
+					// for easier writing OCMOD and VQMOD (it always conflict) when more than 1 extension effect to it). Please merger it to code	
+					if ($query->row['query'] && !in_array($url[0], $disallow_parts)) {
 						$this->request->get['route'] = $query->row['query'];
 					}
 				} else {
